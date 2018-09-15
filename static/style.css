@@ -1,35 +1,36 @@
- /* /static/style.css */
+body, html {
+	margin: 0;
+}
+body {
+	font-family: sans-serif;
+	padding: 50px;
+}
 
-    body,html {
-        height: 100%;
-    }
+/* abstract */
+.nav {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.nav li {
+	display: inline-block;
+}
 
-    .chat-container {
-        margin: 0px;
-        padding: px;
-    }
-
-    .chat-message {
-      padding: 6px;
-      border-radius: 3px;
-      margin-bottom: 3px;
-    }
-
-    .bot-message {
-        background: green;
-        color: white;
-    }
-
-    .human-message {
-        background: dodgerblue;
-        color: white;
-        margin: 13px 1px;
-    }
-
-    .input {
-      width: 100%;
-      margin: 35px 0px;
-      height: 60px;
-      border: 1px solid rosybrown;
-      border-radius: 3px;
-    }
+/* layout */
+nav {
+	background-color: #f0f0f0;
+	margin: -50px -50px 50px;
+}
+nav a {
+	text-decoration: none;
+}
+nav .nav li a {
+	display: block;
+	padding: 1em;
+}
+nav .nav li a:hover {
+	background-color: rgba(0,0,0,0.05);
+}
+.nav-account {
+	float: right;
+}

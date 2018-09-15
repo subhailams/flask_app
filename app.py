@@ -1,13 +1,18 @@
 from flask import Flask
-from flask import request, redirect, url_for, render_template
 from flask_sqlalchemy import SQLAlchemy
-from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required
+from flask import request, redirect, url_for, render_template
+from  flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:19071999@localhost/women'
+app.config['SECRET_KEY'] = 'super-secret'
+app.config['SECURITY_REGISTERABLE'] = True
+app.config['SECURITY_PASSWORD_SALT'] = 'yjahk'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] =True
 app.debug = True
+db = SQLAlchemy(app)
 
-db=SQLAlchemy(app)
 
 # Define models
 roles_users = db.Table('roles_users',
@@ -28,7 +33,17 @@ class User(db.Model, UserMixin):
     roles = db.relationship('Role', secondary=roles_users,
                             backref=db.backref('users', lazy='dynamic'))
 
-# Function to render the index template
+# Setup Flask-Security
+user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+security = Security(app, user_datastore)
+
+# Create a user to test with
+@app.before_first_request
+def create_user():
+    db.create_all()
+    user_datastore.create_user(email='subha@gmail.com', password='19071999')
+    db.session.commit()
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -39,8 +54,6 @@ def profile(email):
     user = User.query.filter_by(email=email).first()
     return render_template('profile.html', user=user)
 
-
-# Post method to add user to database
 @app.route('/post_user', methods=['POST'])
 def post_user():
     user = User(request.form['username'], request.form['email'])
@@ -49,4 +62,4 @@ def post_user():
     return redirect(url_for('index'))
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
