@@ -26,7 +26,10 @@
 {% include "security/_messages.html" %}
 <body id="page-top" class="index">
     <!-- Navigation -->
+
     <nav class="navbar navbar-default navbar-fixed-top">
+    {% if security.registerable or security.recoverable or security.confirmabled %}
+
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header page-scroll">
@@ -41,28 +44,29 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="hidden">
-                        <a href="#page-top"></a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="/loginuser">Login</a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="#about">About</a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="#contact">Contact</a>
-                    </li>
+                {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for_security('logout') }}">Logout</a></li>
+            {% else %}
+                   <li><a href="{{ url_for_security('login') }}">Login</a></li>
+                {% if security.registerable %}
+                <li><a href="{{ url_for_security('register') }}">Register</a></li>
+                {% endif %}
+                {% if security.recoverable %}
+                <li><a href="{{ url_for_security('forgot_password') }}">Forgot password</a></li>
+                {% endif %}
+                {% if security.confirmable %}
+                <li><a href="{{ url_for_security('send_confirmation') }}">Confirm account</a></li>
+                {% endif %}
+            {% endif %}
                 </ul>
+                {% endif %}
+
             </div>
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container-fluid -->
     </nav>
-    <div>
-    <br/><br><br><br>
-     {% include "_nav.html" %}
-    </div>
+  
 
     {% block content %}
     {% endblock %}

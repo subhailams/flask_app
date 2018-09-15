@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import render_template, request, redirect
 from flask_security import Security, logout_user, login_required
+from flask_mail import Mail
 from flask_security.utils import encrypt_password, verify_password
 from flask_restless import APIManager
 from flask_jwt import JWT, jwt_required
@@ -14,10 +15,21 @@ app = Flask(__name__)
 app.config.from_object('config.DevelopmentConfig')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:19071999@localhost/women'
 app.config['SECRET_KEY'] = 'super-secret'
+app.config['SECURITY_REGISTERABLE'] = True
+app.config.update(
+    DEBUG = True,
+    MAIL_SERVER = 'smtp.gmail.com',
+    MAIL_PORT = 587,
+    MAIL_USE_TLS = True,
+    MAIL_USE_SSL = False,
+    MAIL_USERNAME = 'subhailams@gmail.com',
+    MAIL_PASSWORD = 'Subha@1999',
+)
 
-
-
+mail = Mail()
+mail.init_app(app)
 db = SQLAlchemy(app)
+
 
 # Define models
 roles_users = db.Table('roles_users',
