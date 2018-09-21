@@ -55,6 +55,9 @@ class User(db.Model, UserMixin):
     current_login_ip = db.Column(db.String(255))
     login_count = db.Column(db.Integer)
 
+class Employment(db.Model):
+    
+
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
@@ -66,10 +69,38 @@ def home():
     return render_template('index.html')
 
 
-@app.route('/mypage')
+@app.route('/employment')
 @login_required
-def mypage():
-    return render_template('mypage.html')
+def employment():
+    return render_template('employment.html')
+
+@app.route('/healthcare')
+@login_required
+def healthcare():
+    return render_template('healthcare.html')
+
+
+@app.route('/banking')
+@login_required
+def banking():
+    return render_template('banking.html')
+
+@app.route('/socialsecurity')
+@login_required
+def socialsecurity():
+    return render_template('socialsecurity.html')
+
+
+@app.route('/education')
+@login_required
+def education():
+    return render_template('education.html')
+
+
+@app.route('/legalsupport')
+@login_required
+def legalsupport():
+    return render_template('legalsupport.html')
 
 
 @app.route('/logout')
