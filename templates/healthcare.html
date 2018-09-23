@@ -1,11 +1,62 @@
-
+ 
 
 {% extends "layouts/layout1.html" %}
 {% block title %}
 Our custom title
 {% endblock %}
 {% block content %}
-    <!-- Header -->
+
+<br><br><br><br>
+   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/util.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+   <div class="limiter">
+        <div class="container-table100">
+            <div class="wrap-table100">
+                 <div class="col-lg-12 text-center">
+                <h2>Heathcare</h2>
+                <hr class="star-primary">
+              </div>
+                    <div class="table">
+
+                        <div class="row header">
+                            <div class="cell">
+                                S.No
+                            </div>
+                            <div class="cell">
+                                Scheme Name
+                            </div>
+                            <div class="cell">
+                                Description
+                            </div>
+                            <div class="cell">
+                                Action
+                            </div>
+                        </div>
+                      {% for r in res  %}
+                        <div class="row">
+                            <div class="cell" data-title="Full Name">
+                                {{r.id}} 
+                            </div>
+                            <div class="cell" data-title="Age">
+                               {{r.schname}}
+                            </div>
+                            <div class="cell" data-title="Job Title">
+                                {{ r.schdescrip}}
+                            </div>
+                            <div class="cell" data-title="Location">
+                                <a href= {{ r.site }} >View</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                       
+
+                    </div>
+            </div>
+        </div>
+   
+</div>
+
 
 
 {% endblock %}

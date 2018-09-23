@@ -9,7 +9,21 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import request, redirect, url_for, render_template
 from flask_security import UserMixin, RoleMixin, SQLAlchemyUserDatastore
 
-from admin import init_admin
+
+#database import
+from sqlalchemy import create_engine
+from sqlalchemy import MetaData
+from sqlalchemy import Table
+from sqlalchemy import Column
+from sqlalchemy import Integer
+from sqlalchemy import String
+from sqlalchemy import select
+from sqlalchemy import or_
+
+from flask_script import Manager
+from flask_migrate import Migrate, MigrateCommand
+
+
 
 app = Flask(__name__)
 app.config.from_object('config.DevelopmentConfig')
@@ -26,11 +40,12 @@ app.config.update(
     MAIL_PASSWORD = 'Subha@1999',
 )
 
+
 mail = Mail()
 mail.init_app(app)
 db = SQLAlchemy(app)
 
-
+5
 # Define models
 roles_users = db.Table('roles_users',
         db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
@@ -55,52 +70,112 @@ class User(db.Model, UserMixin):
     current_login_ip = db.Column(db.String(255))
     login_count = db.Column(db.Integer)
 
-class Employment(db.Model):
-    
+class Empscheme(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    schname = db.Column(db.String(255), unique=True)
+    schdescrip =  db.Column(db.String(255), unique=True)
+    site = db.Column(db.String(255))
+
+    def __repr__(self):
+        return '<Empscheme %r>' % self.schname
+
+class Healthscheme(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    schname = db.Column(db.String(255), unique=True)
+    schdescrip =  db.Column(db.String(255), unique=True)
+    site = db.Column(db.String(255))
+
+    def __repr__(self):
+        return '<Empscheme %r>' % self.schname
+
+class Educationscheme(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    schname = db.Column(db.String(255), unique=True)
+    schdescrip =  db.Column(db.String(255), unique=True)
+    site = db.Column(db.String(255))
+
+    def __repr__(self):
+        return '<Empscheme %r>' % self.schname
+
+class Bankingscheme(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    schname = db.Column(db.String(255), unique=True)
+    schdescrip =  db.Column(db.String(255), unique=True)
+    site = db.Column(db.String(255))
+
+    def __repr__(self):
+        return '<Empscheme %r>' % self.schname
+
+class Socialsecurityscheme(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    schname = db.Column(db.String(255), unique=True)
+    schdescrip =  db.Column(db.String(255), unique=True)
+    site = db.Column(db.String(255))
+
+    def __repr__(self):
+        return '<Empscheme %r>' % self.schname
+
+class legalsupportscheme(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    schname = db.Column(db.String(255), unique=True)
+    schdescrip =  db.Column(db.String(255), unique=True)
+    site = db.Column(db.String(255))
+
+    def __repr__(self):
+        return '<Empscheme %r>' % self.schname
+
+
+
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
 
-
 # Views 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    user=User.query.all()
+    return render_template('index.html',user= user)
 
 
 @app.route('/employment')
 @login_required
 def employment():
-    return render_template('employment.html')
+    res= Empscheme.query.all()
+    return render_template('employment.html', res=res)
 
 @app.route('/healthcare')
 @login_required
 def healthcare():
-    return render_template('healthcare.html')
+    res= Healthscheme.query.all()
+    return render_template('healthcare.html', res=res)
 
 
 @app.route('/banking')
 @login_required
 def banking():
-    return render_template('banking.html')
+    res= Bankingscheme.query.all()
+    return render_template('banking.html', res=res)
 
 @app.route('/socialsecurity')
 @login_required
 def socialsecurity():
-    return render_template('socialsecurity.html')
+    res= Socialsecurityscheme.query.all()
+    return render_template('socialsecurity.html', res=res)
 
 
 @app.route('/education')
 @login_required
 def education():
-    return render_template('education.html')
+    res= Educationscheme.query.all()
+    return render_template('education.html', res=res)
 
 
 @app.route('/legalsupport')
 @login_required
 def legalsupport():
-    return render_template('legalsupport.html')
+    res= legalsupportscheme.query.all()
+    return render_template('legalsupport.html', res=res)
 
 
 @app.route('/logout')
@@ -114,6 +189,8 @@ def post_user():
     db.session.add(user)
     db.session.commit()
     return redirect(url_for('home'))
-# Start server  ===============================================================
+
+
+# Start server 
 if __name__ == '__main__':
     app.run()

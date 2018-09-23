@@ -4,7 +4,6 @@ from flask_security import current_user
 from flask import redirect
 from flask_security import logout_user
 
-from application import app
 from database import db
 from models import User, Role
 

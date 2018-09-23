@@ -1,10 +1,17 @@
-from database import db
+from manage import db,app
 from flask_security import UserMixin, RoleMixin, SQLAlchemyUserDatastore
 
-roles_users = db.Table('roles_users',
-                       db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
-                       db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
 
+
+# Define models
+roles_users = db.Table('roles_users',
+        db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
+        db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
+
+class Role(db.Model, RoleMixin):
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(80), unique=True)
+    description = db.Column(db.String(255))
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -20,14 +27,58 @@ class User(db.Model, UserMixin):
     current_login_ip = db.Column(db.String(255))
     login_count = db.Column(db.Integer)
 
-    def __repr__(self):
-        return '<models.User[email=%s]>' % self.email
-
-
-class Role(db.Model, RoleMixin):
+class Empscheme(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(80), unique=True)
-    description = db.Column(db.String(255))
+    schname = db.Column(db.String(255), unique=True)
+    schdescrip =  db.Column(db.String(255), unique=True)
+    site = db.Column(db.String(255))
 
-user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+    def __repr__(self):
+        return '<Empscheme %r>' % self.schname
+
+class Healthscheme(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    schname = db.Column(db.String(255), unique=True)
+    schdescrip =  db.Column(db.String(255), unique=True)
+    site = db.Column(db.String(255))
+
+    def __repr__(self):
+        return '<Empscheme %r>' % self.schname
+
+class Educationscheme(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    schname = db.Column(db.String(255), unique=True)
+    schdescrip =  db.Column(db.String(255), unique=True)
+    site = db.Column(db.String(255))
+
+    def __repr__(self):
+        return '<Empscheme %r>' % self.schname
+
+class Bankingscheme(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    schname = db.Column(db.String(255), unique=True)
+    schdescrip =  db.Column(db.String(255), unique=True)
+    site = db.Column(db.String(255))
+
+    def __repr__(self):
+        return '<Empscheme %r>' % self.schname
+
+class Socialsecurityscheme(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    schname = db.Column(db.String(255), unique=True)
+    schdescrip =  db.Column(db.String(255), unique=True)
+    site = db.Column(db.String(255))
+
+    def __repr__(self):
+        return '<Empscheme %r>' % self.schname
+
+class legalsupportscheme(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    schname = db.Column(db.String(255), unique=True)
+    schdescrip =  db.Column(db.String(255), unique=True)
+    site = db.Column(db.String(255))
+
+    def __repr__(self):
+        return '<Empscheme %r>' % self.schname
+
 
